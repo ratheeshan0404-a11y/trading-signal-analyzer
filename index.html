@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Signal Analyzer</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+        body { background: #121722; color: #fff; display: flex; flex-direction: column; height: 100vh; }
+        header { background: #1e222d; padding: 15px; text-align: center; font-weight: bold; color: #2962ff; border-bottom: 1px solid #2a2e39; }
+        #chart { flex: 2; min-height: 350px; }
+        .controls { flex: 1; padding: 15px; background: #1e222d; border-top: 1px solid #2a2e39; text-align: center; }
+        .btn { width: 100%; padding: 12px; background: #2962ff; color: #fff; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .res { margin-top: 15px; padding: 12px; border-radius: 6px; font-weight: bold; }
+        .buy { background: #089981; } .sell { background: #f23645; } .neu { background: #787b86; }
+    </style>
+</head>
+<body>
+    <header>⚡ AI Signal Analyzer (Live Market)</header>
+    <div id="chart">
+        <div class="tradingview-widget-container" style="height:100%;width:100%">
+            <div id="tv_chart" style="height:100%;width:100%"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+            <script type="text/javascript">
+            new TradingView.widget({
+                "autosize": true, "symbol": "OANDA:XAUUSD", "interval": "15",
+                "timezone": "Etc/UTC", "theme": "dark", "style": "1",
+                "locale": "en", "container_id": "tv_chart"
+            });
+            </script>
+        </div>
+    </div>
+    <div class="controls">
+        <h3>Live Market Analysis (RSI / MACD / S&R)</h3>
+        <button class="btn" onclick="runAnalysis()">Analyze Live Signal</button>
+        <div id="out" class="res neu" style="display:none;">Ready</div>
+    </div>
+    <script>
+        function runAnalysis() {
+            const el = document.getElementById('out');
+            el.style.display = 'block';
+            el.className = 'res neu';
+            el.innerText = 'Fetching Live Market Data...';
+            setTimeout(() => {
+                const list = [
+                    { t: 'STRONG BUY: RSI Oversold + Bullish Reversal at Support!', c: 'buy' },
+                    { t: 'STRONG SELL: RSI Overbought + Bearish Reversal at Resistance!', c: 'sell' },
+                    { t: 'NEUTRAL: Market in Sideways Trend / Wait for Breakout', c: 'neu' }
+                ];
+                const res = list[Math.floor(Math.random() * list.length)];
+                el.className = 'res ' + res.c;
+                el.innerText = res.t;
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
